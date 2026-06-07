@@ -1,0 +1,111 @@
+
+
+{% block title %}Experience - Mirza Athiyab Baig{% endblock %}
+
+{% block extra_css %}
+<style>
+    .experience-header {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, #1a1f35 100%);
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+    }
+    .experience-header h1 {
+        font-size: 3rem;
+        color: var(--light-bg);
+        margin-bottom: 1rem;
+    }
+    .experience-header p {
+        color: var(--soft-blue-gray);
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .experience-section {
+        padding: 4rem 2rem;
+        background: var(--light-bg);
+        min-height: 60vh;
+    }
+    .experience-container {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+    .experience-card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        padding: 2rem;
+        transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    }
+    .experience-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+    .company-logo {
+        max-width: 60px;
+        margin-bottom: 1rem;
+    }
+    .role-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-bottom: 0.5rem;
+    }
+    .company-name, .duration {
+        font-size: 1.1rem;
+        color: var(--warm-beige);
+        margin-bottom: 0.5rem;
+    }
+    .timeline-description {
+        color: var(--soft-blue-gray);
+        line-height: 1.6;
+    }
+    .tech-tags {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .tech-tag {
+        background: var(--primary-dark);
+        color: var(--light-bg);
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.85rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="experience-header">
+    <h1>Experience</h1>
+    <p>My professional journey and internships</p>
+</header>
+<section class="experience-section">
+    <div class="experience-container">
+        {% for experience in experiences %}
+        <div class="experience-card">
+            {% if experience.logo %}
+            <img src="{{ url_for('static', filename='images/' + experience.logo) }}" alt="{{ experience.company }} logo" class="company-logo"/>
+            {% else %}
+            <i class="fas fa-briefcase" style="font-size:2rem;color:var(--primary-dark);"></i>
+            {% endif %}
+            <h3 class="role-title">{{ experience.title }}</h3>
+            <p class="company-name">{{ experience.company }}</p>
+            <p class="duration">{{ experience.duration }}</p>
+            <p class="timeline-description">{{ experience.description }}</p>
+            {% if experience.skills %}
+            <div class="tech-tags">
+                {% for skill in experience.skills %}
+                <span class="tech-tag">{{ skill }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

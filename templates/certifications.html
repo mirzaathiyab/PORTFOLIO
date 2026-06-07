@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Certifications - Mirza Athiyab Baig{% endblock %}
+
+{% block extra_css %}
+<style>
+    .certifications-header {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, #1a1f35 100%);
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+    }
+    
+    .certifications-header h1 {
+        font-size: 3rem;
+        color: var(--light-bg);
+        margin-bottom: 1rem;
+    }
+    
+    .certifications-header p {
+        color: var(--soft-blue-gray);
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .certifications-section {
+        padding: 4rem 2rem;
+        background: var(--light-bg);
+        min-height: 60vh;
+    }
+    
+    .certifications-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .certification-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 40px rgba(48, 54, 79, 0.1);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .certification-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--warm-beige), var(--soft-blue-gray));
+    }
+    
+    .certification-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 60px rgba(48, 54, 79, 0.2);
+    }
+    
+    .certification-icon {
+        width: 70px;
+        height: 70px;
+        background: var(--primary-dark);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .certification-icon i {
+        font-size: 2rem;
+        color: var(--warm-beige);
+    }
+    
+    .certification-badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        background: var(--warm-beige);
+        color: var(--primary-dark);
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .certification-card h3 {
+        color: var(--primary-dark);
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .certification-issuer {
+        color: var(--soft-blue-gray);
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .certification-description {
+        color: var(--soft-blue-gray);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    .certification-date {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        color: var(--soft-blue-gray);
+        font-size: 0.9rem;
+    }
+    
+    .certification-date i {
+        color: var(--warm-beige);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Certifications Header -->
+<header class="certifications-header">
+    <h1>Certifications</h1>
+    <p>Professional certifications and credentials</p>
+</header>
+
+<!-- Certifications Section -->
+<section class="certifications-section">
+    <div class="certifications-grid">
+        {% for certification in certifications %}
+        <div class="certification-card">
+            <div class="certification-icon">
+                <i class="fas fa-certificate"></i>
+            </div>
+            <span class="certification-badge">Verified</span>
+            <h3>{{ certification.title }}</h3>
+            <p class="certification-issuer">{{ certification.issuer }}</p>
+            <p class="certification-description">{{ certification.description }}</p>
+            <div class="certification-date">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Completed</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

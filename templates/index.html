@@ -1,0 +1,619 @@
+{% extends "base.html" %}
+
+{% block title %}Mirza Athiyab Baig - Portfolio{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Additional styles for index page */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        width: 100%;
+        padding: 2rem;
+        gap: 3rem;
+        z-index: 2;
+    }
+    
+    .hero-text {
+        flex: 1;
+        text-align: left;
+    }
+    
+    .hero-image {
+        flex: 0 0 270px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        animation: fadeInRight 1s ease 0.5s forwards;
+    }
+    
+    .hero-image img {
+        width: 270px;
+        height: 270px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #E1D9BC;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    
+    .hero-image img:hover {
+        transform: scale(1.08);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+    
+    @keyframes fadeInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .hero-content {
+        text-align: center;
+        z-index: 2;
+        padding: 2rem;
+    }
+    
+    .hero-title {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        opacity: 0;
+        animation: fadeInUp 1s ease forwards;
+    }
+    
+    .hero-title .name {
+        color: var(--primary-dark);
+    }
+    
+    .hero-title .surname {
+        color: var(--warm-beige);
+    }
+    
+    .hero-tagline {
+        font-size: clamp(1rem, 3vw, 1.5rem);
+        color: var(--soft-blue-gray);
+        margin-bottom: 2rem;
+        opacity: 0;
+        animation: fadeInUp 1s ease 0.3s forwards;
+    }
+    
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        opacity: 0;
+        animation: fadeInUp 1s ease 0.6s forwards;
+    }
+    
+    .btn {
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-primary {
+        background: var(--primary-dark);
+        color: var(--light-bg);
+    }
+    
+    .btn-primary:hover {
+        background: var(--soft-blue-gray);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(48, 54, 79, 0.3);
+    }
+    
+    .btn-secondary {
+        background: transparent;
+        color: var(--primary-dark);
+        border: 2px solid var(--primary-dark);
+    }
+    
+    .btn-secondary:hover {
+        background: var(--primary-dark);
+        color: var(--light-bg);
+        transform: translateY(-3px);
+    }
+    
+    .hero-scroll {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: bounce 2s infinite;
+        z-index: 2;
+    }
+    
+    .hero-scroll a {
+        color: var(--primary-dark);
+        font-size: 2rem;
+    }
+    
+    /* Floating shapes background */
+    .hero-shapes {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    /* Mobile Responsive Styles */
+    @media (max-width: 992px) {
+        .hero-container {
+            flex-direction: column-reverse;
+            text-align: center;
+            gap: 2rem;
+            padding: 6rem 1.5rem 2rem;
+        }
+        
+        .hero-text {
+            text-align: center;
+        }
+        
+        .hero-image {
+            flex: 0 0 auto;
+            order: -1;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+        
+        .hero-image img {
+            width: 220px;
+            height: 220px;
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-buttons {
+            justify-content: center;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .hero-image img {
+            width: 180px;
+            height: 180px;
+        }
+        
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .hero-tagline {
+            font-size: 0.95rem;
+        }
+    }
+    
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.1;
+    }
+    
+    .shape-1 {
+        width: 300px;
+        height: 300px;
+        background: var(--primary-dark);
+        top: -100px;
+        right: -100px;
+        animation: float 20s infinite;
+    }
+    
+    .shape-2 {
+        width: 200px;
+        height: 200px;
+        background: var(--warm-beige);
+        bottom: -50px;
+        left: -50px;
+        animation: float 15s infinite reverse;
+    }
+    
+    .shape-3 {
+        width: 150px;
+        height: 150px;
+        background: var(--soft-blue-gray);
+        top: 50%;
+        left: 10%;
+        animation: float 18s infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-30px) rotate(10deg); }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+        40% { transform: translateX(-50%) translateY(-10px); }
+        60% { transform: translateX(-50%) translateY(-5px); }
+    }
+    
+    /* Section Styles */
+    section {
+        padding: 5rem 2rem;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        color: var(--primary-dark);
+        position: relative;
+    }
+    
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: var(--warm-beige);
+        margin: 1rem auto;
+        border-radius: 2px;
+    }
+    
+    .section-subtitle {
+        text-align: center;
+        color: var(--soft-blue-gray);
+        margin-bottom: 3rem;
+        font-size: 1.1rem;
+    }
+    
+    /* About Section */
+    #about {
+        background: var(--light-bg);
+    }
+    
+    .about-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .about-content {
+        background: white;
+        padding: 3rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(48, 54, 79, 0.1);
+    }
+    
+    .about-content p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--primary-dark);
+        text-align: justify;
+    }
+    
+    /* Skills Section */
+    #skills {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, #1a1f35 100%);
+    }
+    
+    #skills .section-title {
+        color: var(--light-bg);
+    }
+    
+    #skills .section-subtitle {
+        color: var(--soft-blue-gray);
+    }
+    
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .skill-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .skill-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .skill-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .skill-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--light-bg);
+    }
+    
+    .skill-percentage {
+        color: var(--warm-beige);
+        font-weight: 600;
+    }
+    
+    .skill-bar {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .skill-progress {
+        height: 100%;
+        background: linear-gradient(90deg, var(--warm-beige), var(--soft-blue-gray));
+        border-radius: 4px;
+        width: 0;
+        transition: width 1.5s ease;
+    }
+    
+    /* Achievements Section */
+    #achievements {
+        background: var(--light-bg);
+    }
+    
+    .achievements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .achievement-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(48, 54, 79, 0.08);
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--warm-beige);
+    }
+    
+    .achievement-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(48, 54, 79, 0.15);
+    }
+    
+    .achievement-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--primary-dark);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .achievement-icon i {
+        co lor: var(--warm-beige);
+        font-size: 1.5rem;
+    }
+    
+    .achievement-card h3 {
+        color: var(--primary-dark);
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+    }
+    
+    .achievement-card p {
+        color: var(--soft-blue-gray);
+        font-size: 0.95rem;
+    }
+    
+    /* Quick Stats */
+    .stats-container {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+        margin-top: 3rem;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--warm-beige);
+    }
+    
+    .stat-label {
+        color: var(--soft-blue-gray);
+        font-size: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+    
+    <div class="hero-container">
+        <div class="hero-text">
+            <h1 class="hero-title">
+                <span class="name">Mirza</span> <span class="surname">Athiyab Baig</span>
+            </h1>
+            <p class="hero-tagline">Data Science Student | ML Developer | AI Enthusiast</p>
+            
+            <div class="hero-buttons">
+                <a href="{{ url_for('projects_page') }}" class="btn btn-primary">
+                    <i class="fas fa-project-diagram"></i> View Projects
+                </a>
+                <a href="{{ url_for('download_resume') }}" class="btn btn-secondary" target="_blank">
+                    <i class="fas fa-download"></i> Download Resume
+                </a>
+            </div>
+        </div>
+        
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Mirza Athiyab Baig">
+        </div>
+    </div>
+    
+    <div class="hero-scroll">
+        <a href="#about">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about">
+    <h2 class="section-title">About Me</h2>
+    <p class="section-subtitle">Get to know me better</p>
+    
+    <div class="about-container">
+        <div class="about-content">
+            <p>
+                I am a passionate Data Science student based in Hyderabad, Telangana, India, with a strong interest in Machine Learning, Artificial Intelligence, and solving real-world problems through data-driven approaches. As an aspiring ML developer and AI enthusiast, I constantly explore new technologies and techniques to build intelligent systems that can make a positive impact.
+            </p>
+            <br>
+            <p>
+                My journey in data science involves continuous learning and practical application of various ML algorithms, NLP techniques, and data visualization tools. I believe in the power of data to transform businesses and create innovative solutions. Through internships and projects, I have gained hands-on experience in developing machine learning models, data preprocessing, and deploying AI solutions using Flask and other modern frameworks.
+            </p>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="6">0</div>
+                    <div class="stat-label">Projects Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="3">0</div>
+                    <div class="stat-label">Internships</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="6">0</div>
+                    <div class="stat-label">Certifications</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="4">0</div>
+                    <div class="stat-label">Awards</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills">
+    <h2 class="section-title">Skills</h2>
+    <p class="section-subtitle">Technologies and tools I work with</p>
+    
+    <div class="skills-grid">
+        {% for skill in skills %}
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-name">{{ skill.name }}</span>
+                <span class="skill-percentage">{{ skill.level }}%</span>
+            </div>
+            <div class="skill-bar">
+                <div class="skill-progress" data-width="{{ skill.level }}"></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Achievements Section -->
+<section id="achievements">
+    <h2 class="section-title">Achievements</h2>
+    <p class="section-subtitle">Recognition and accomplishments</p>
+    
+    <div class="achievements-grid">
+        {% for achievement in achievements %}
+        <div class="achievement-card">
+            <div class="achievement-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h3>{{ achievement.title }}</h3>
+            <p>{{ achievement.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Animate skill bars on scroll
+    const observerOptions = {
+        threshold: 0.5
+    };
+    
+    const skillObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const progressBars = entry.target.querySelectorAll('.skill-progress');
+                progressBars.forEach(bar => {
+                    const width = bar.getAttribute('data-width');
+                    bar.style.width = width + '%';
+                });
+            }
+        });
+    }, observerOptions);
+    
+    const skillsSection = document.getElementById('skills');
+    if (skillsSection) {
+        skillObserver.observe(skillsSection);
+    }
+</script>
+{% endblock %}
